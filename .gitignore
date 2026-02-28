@@ -1,0 +1,20 @@
+# IDE
+.idea/
+.vscode/
+.DS_Store
+
+# build output
+build/
+cmake-build-debug/
+cmake-build-d/
+*.tmp
+
+# generated at runtime
+hashes.db
+
+# machine-specific cmake settings
+CMakeUserPresets.json
+
+# test files
+testfile.txt
+test file.txt

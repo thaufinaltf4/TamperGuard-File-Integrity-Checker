@@ -6,7 +6,7 @@ A command-line tool that detects file tampering using SHA256 hashing. Built in C
 
 ## Ideation
 
-I wanted to build something practical with C++ that went beyond basic data structures. File integrity checking is a real problem, used in everything from malware detection to verifying software downloads. The core idea is simple: take a snapshot of a file's hash, then compare it later to see if anything changed.
+I wanted to build something practical with C++ that went beyond the basic data structures I learned in my DSA class. File integrity checking is a real problem, used in everything from malware detection to verifying software downloads. The core idea is simple: take a snapshot of a file's hash, then compare it later to see if anything changed.
 
 ---
 

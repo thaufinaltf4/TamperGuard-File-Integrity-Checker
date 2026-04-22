@@ -12,13 +12,16 @@ I wanted to build something practical with C++ that went beyond the basic data s
 
 ## How it works
 
-The tool has three commands:
+The tool has four commands:
 
 - **Record** - computes a SHA256 hash of a file and saves it to a local database (`hashes.db`)
 - **Check** - recomputes the hash and compares it against the stored one, warning you if anything changed
+- **Monitor** - recursively scans a directory, records a baseline of all files, then polls every 10 seconds detecting modified, new, and deleted files in real time
 - **Reset** - clears the screen and restarts the session
 
 Hashes are stored in a plain text file with one `filepath hash` entry per line. When updating an existing entry, it writes to a temp file first then swaps it in to avoid corrupting the database mid-write.
+
+The monitor command uses `std::filesystem` for recursive directory traversal and `std::atomic` with a SIGINT handler for clean Ctrl+C exit.
 
 ---
 
@@ -51,8 +54,10 @@ make
 
 ## Usage
 
+**Recording and checking a single file:**
+
 ```
-Commands: Record, Check, Reset, & Exit
+Commands: Record, Check, Reset, Monitor, & Exit
 
 Enter Command: record
 Enter Filename: /path/to/file.txt
@@ -71,3 +76,27 @@ WARNING: File has been modified: /path/to/file.txt
 Expected: 2cf24dba5fb0a30e...
 Got:      82dea8e2b3c1f49a...
 ```
+
+**Monitoring a directory:**
+
+```
+Enter Command: monitor
+Enter directory path: /path/to/dir
+Scanning and recording baseline for: /path/to/dir
+Baseline recorded for 3 file(s).
+Monitoring every 10 seconds. Press Ctrl+C to stop.
+All files unchanged.
+[MODIFIED] /path/to/dir/config.txt
+  Expected: 2cf24dba5fb0a30e...
+  Got:      82dea8e2b3c1f49a...
+[NEW]      /path/to/dir/suspicious.sh
+[DELETED]  /path/to/dir/original.txt
+```
+
+---
+
+## Note on commit history
+
+The initial version of this project (Record, Check, Reset commands) was built throughout February 2026. The monitor command was added on April 22, 2026.
+
+The git history doesn't reflect this accurately — a `git pull --rebase` went wrong during the April push and wiped the local commit history, so everything ended up in a single root commit. The timeline above is the accurate one.
